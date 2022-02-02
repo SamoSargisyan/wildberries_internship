@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:
+  postgres:
+    container_name: wb_postgres
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=wb
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=pass
+    ports:
+      - 5432:5432
+    volumes:
+      - ./docker-data/postgres-data:/var/lib/postgresql/data
+
+  adminer:
+    container_name: wb_adminer
+    image: adminer:latest
+    restart: always
+    ports:
+      - 8011:8080
+    depends_on:
+      - postgres
