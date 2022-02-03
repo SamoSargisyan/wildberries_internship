@@ -1,4 +1,4 @@
-package model
+package domain
 
 type ItemEntity struct {
 	ChrtId      uint64 `db:"chrtId"`

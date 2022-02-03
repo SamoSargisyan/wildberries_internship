@@ -1,4 +1,4 @@
-package model
+package domain
 
 type DeliveryEntity struct {
 	ID       uint64 `db:"ID"`

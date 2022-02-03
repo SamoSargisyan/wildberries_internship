@@ -1,4 +1,4 @@
-package model
+package domain
 
 type PaymentEntity struct {
 	Transaction  string `db:"transaction"`
