@@ -6,7 +6,7 @@ import (
 )
 
 func NewConnection(dbcfg string) (*sqlx.DB, error) {
-	
+
 	db, err := sqlx.Open("postgres", dbcfg)
 	if err != nil {
 		return nil, err
