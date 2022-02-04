@@ -2,9 +2,11 @@ module l0
 
 go 1.17
 
-require gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
-
 require (
-	gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
+	github.com/caarlos0/env v3.5.0+incompatible
+	github.com/jmoiron/sqlx v1.3.4
+	github.com/lib/pq v1.2.0
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
+
+require github.com/stretchr/testify v1.7.0 // indirect
