@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	_ "github.com/caarlos0/env"
+	"github.com/joho/godotenv"
 	"gopkg.in/yaml.v3"
 	"io"
 	"log"
@@ -14,7 +15,7 @@ type Database struct {
 	Host     string `yaml:"host"`
 	Port     string `yaml:"port"`
 	User     string `yaml:"user"`
-	Password string `yaml:"password"`
+	Password string `env:"DB_PASSWORD"`
 	Db       string `yaml:"dbname"`
 	SslMode  string `yaml:"sslmode"`
 	Combine  string
@@ -30,7 +31,7 @@ func closer(c io.Closer) {
 	}
 }
 
-func ReadConfigYML(filePath string) (cfg *Config, err error) {
+func GetDatabaseConfigurations(filePath string) (cfg *Config, err error) {
 	file, err := os.Open(filepath.Clean(filePath))
 	if err != nil {
 		return cfg, err
@@ -48,11 +49,17 @@ func ReadConfigYML(filePath string) (cfg *Config, err error) {
 		return cfg, err
 	}
 
+	err = godotenv.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// password removed
 	cfg.Database.Combine = fmt.Sprintf("host=%v port=%v user=%v password=%v dbname=%v sslmode=%v",
 		cfg.Database.Host,
 		cfg.Database.Port,
 		cfg.Database.User,
-		cfg.Database.Password,
+		os.Getenv("DB_PASSWORD"),
 		cfg.Database.Db,
 		cfg.Database.SslMode,
 	)

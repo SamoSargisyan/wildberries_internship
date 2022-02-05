@@ -2,6 +2,5 @@ database:
   host: localhost
   port: 5432
   user: admin
-  password: pass
   dbname: wb
   sslmode: disable

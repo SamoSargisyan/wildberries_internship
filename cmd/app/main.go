@@ -2,18 +2,21 @@ package main
 
 import (
 	"l0/config"
-	"l0/internal/repository/postgres"
+	"l0/internal/service"
 	"log"
+	"path/filepath"
 )
 
 func main() {
-	// не нравится хардкодить строку. Требует исправления
-	cfg, err := config.ReadConfigYML("/Users/samvelsargisan/golang/wildberries/l0/config/main.yml")
+	mainConfigFile, _ := filepath.Abs("./config/main.yml")
+
+	cfg, err := config.GetDatabaseConfigurations(mainConfigFile)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	_, err = postgres.NewConnection(cfg.Database.Combine)
+	//log.Fatal(cfg.Database.Combine)
+	_, err = service.Bootstrap(cfg, "1")
 	if err != nil {
 		log.Fatalln(err)
 	}
