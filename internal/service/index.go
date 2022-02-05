@@ -5,7 +5,7 @@ import (
 	"l0/config"
 	"l0/internal/domain"
 	"l0/internal/repository/order_repository"
-	"l0/internal/repository/postgres"
+	"l0/pkg/db/postgres"
 	"log"
 )
 

@@ -54,7 +54,6 @@ func GetDatabaseConfigurations(filePath string) (cfg *Config, err error) {
 		log.Fatal(err)
 	}
 
-	// password removed
 	cfg.Database.Combine = fmt.Sprintf("host=%v port=%v user=%v password=%v dbname=%v sslmode=%v",
 		cfg.Database.Host,
 		cfg.Database.Port,

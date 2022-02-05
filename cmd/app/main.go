@@ -15,7 +15,6 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	//log.Fatal(cfg.Database.Combine)
 	_, err = service.Bootstrap(cfg, "1")
 	if err != nil {
 		log.Fatalln(err)
