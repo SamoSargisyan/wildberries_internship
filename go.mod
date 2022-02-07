@@ -3,17 +3,20 @@ module l0
 go 1.17
 
 require (
-	github.com/allegro/bigcache/v3 v3.0.1
 	github.com/caarlos0/env v3.5.0+incompatible
 	github.com/go-playground/validator/v10 v10.10.0
+	github.com/gorilla/handlers v1.5.1
+	github.com/gorilla/mux v1.8.0
 	github.com/jmoiron/sqlx v1.3.4
 	github.com/joho/godotenv v1.4.0
 	github.com/lib/pq v1.10.4
 	github.com/nats-io/stan.go v0.10.2
+	github.com/patrickmn/go-cache v2.1.0+incompatible
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
 
 require (
+	github.com/felixge/httpsnoop v1.0.1 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect

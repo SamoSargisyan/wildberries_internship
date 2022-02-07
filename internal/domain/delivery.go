@@ -1,13 +1,11 @@
 package domain
 
 type DeliveryEntity struct {
-	ID       uint64 `db:"ID"`
-	Name     string `db:"name"`
-	Phone    string `db:"phone"`
-	Zip      string `db:"zip"`
-	City     string `db:"city"`
-	Address  string `db:"address"`
-	Region   string `db:"region"`
-	Email    string `db:"email"`
-	OrderUID string `db:"order_uid"`
+	Name    string `db:"name" json:"name" validate:"required,max=128"`
+	Phone   string `db:"phone" json:"phone" validate:"required,max=16" faker:"len=16"`
+	Zip     string `db:"zip" json:"zip" validate:"required,max=128"`
+	City    string `db:"city" json:"city" validate:"required,max=128"`
+	Address string `db:"address" json:"address" validate:"required,max=256"`
+	Region  string `db:"region" json:"region" validate:"required,max=256"`
+	Email   string `db:"email" json:"email" validate:"required,max=128"`
 }

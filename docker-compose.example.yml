@@ -4,13 +4,14 @@ services:
   postgres:
     container_name: wb_postgres
     image: postgres
+    platform: linux/x86_64
     restart: always
     environment:
       - POSTGRES_DB=wb
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=pass
     ports:
-      - 5432:5432
+      - "5432:5432"
     volumes:
       - ./docker-data/postgres-data:/var/lib/postgresql/data
 
@@ -19,6 +20,30 @@ services:
     image: adminer:latest
     restart: always
     ports:
-      - 8011:8080
+      - "8011:8080"
     depends_on:
       - postgres
+
+
+  nats:
+    image: nats:latest
+    ports:
+      - "4222:4222"
+#    command: "--cluster_name NATS --cluster nats://0.0.0.0:4222 --http_port 8222 "
+    networks: ["main"]
+    stdin_open: true
+    tty: true
+
+  nats-box:
+    image: synadia/nats-box
+    networks: ["main"]
+    stdin_open: true
+    tty: true
+
+networks:
+  main:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.255.0/24
+      driver: default
