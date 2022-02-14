@@ -1,61 +1,37 @@
 package cache
 
-import "sync"
+import (
+	"github.com/patrickmn/go-cache"
+	"l0/internal/domain"
+	"time"
+)
 
-type Cache struct {
-	sync.RWMutex
-	data map[string]interface{}
+type LocalCache struct {
+	orders *cache.Cache
 }
 
-func NewCache() *Cache {
-	data := make(map[string]interface{})
+func NewCache(orders []domain.OrderEntity) *LocalCache {
 
-	cache := Cache{
-		data: data,
+	c := cache.New(1*time.Hour, 1*time.Hour)
+
+	for i := range orders {
+		c.Set(orders[i].OrderUID, orders[i], cache.NoExpiration)
 	}
 
-	return &cache
+	return &LocalCache{
+		orders: c,
+	}
 }
 
-func (c *Cache) Set(key string, value interface{}) {
-	c.Lock()
-
-	c.data[key] = value
-
-	c.Unlock()
+func (cacheLocal *LocalCache) Set(key string, value interface{}, duration time.Duration) {
+	cacheLocal.orders.Set(key, value, duration)
 }
 
-func (c *Cache) Get(key string) (interface{}, bool) {
-	c.RLock()
-
-	item, found := c.data[key]
-	if !found {
-		return nil, false
+func (cacheLocal *LocalCache) Get(key string) interface{} {
+	order, _ := cacheLocal.orders.Get(key)
+	if order == nil {
+		panic("Error while receiving data from cache")
 	}
 
-	c.RUnlock()
-
-	return item, true
-}
-
-func (c *Cache) Delete(key string) {
-	c.Lock()
-
-	delete(c.data, key)
-
-	c.Unlock()
-}
-
-func (c *Cache) GetAllIDs() []string {
-	var ids []string
-
-	c.RLock()
-
-	for key := range c.data {
-		ids = append(ids, key)
-	}
-
-	c.RUnlock()
-
-	return ids
+	return order
 }

@@ -2,7 +2,7 @@ BEGIN;
 
 CREATE TABLE IF NOT EXISTS deliveries
 (
-    id        BIGSERIAL PRIMARY KEY UNIQUE,
+    order_uid varchar      NOT NULL,
     name      varchar(128) NOT NULL,
     phone     varchar(16)  NOT NULL,
     zip       varchar(128) NOT NULL,
@@ -11,7 +11,6 @@ CREATE TABLE IF NOT EXISTS deliveries
     region    varchar(256) NOT NULL,
     email     varchar(128) NOT NULL,
 
-    order_uid varchar      NOT NULL,
     UNIQUE (order_uid),
     CONSTRAINT fk_order FOREIGN KEY (order_uid) REFERENCES orders (order_uid)
 );

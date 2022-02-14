@@ -1,36 +1,27 @@
 package service
 
 import (
-	"github.com/jmoiron/sqlx"
-	"l0/config"
-	"l0/internal/domain"
+	"l0/http_server"
+	"l0/internal/cache"
 	"l0/internal/repository/order_repository"
-	"l0/pkg/db/postgres"
-	"log"
+	"l0/nats/sub"
 )
 
-func Bootstrap(cfg *config.Config, orderUID string) (*domain.OrderEntity, error) {
+func Bootstrap() error {
+	db := getDb()
+	defer db.Close()
 
-	db, err := postgres.NewConnection(cfg.Database.Combine)
-	if err != nil {
-		return nil, err
-	}
+	store := order_repository.Init(db)
+	orders := store.Order().FindAll()
 
-	defer func(db *sqlx.DB) {
-		err := db.Close()
-		if err != nil {
-			log.Fatal(err)
-		}
-	}(db)
+	cacheLocal := cache.NewCache(orders)
 
-	st := order_repository.Init(db)
+	natsConnection := getStan()
+	defer natsConnection.Close()
 
-	order, err := st.Order().FindByID(orderUID)
+	subscription := natssub.Sub(natsConnection, store, cacheLocal)
+	defer subscription.Unsubscribe()
 
-	if err != nil {
-		return nil, err
-	}
-
-	log.Print(order.DateCreated, "success")
-	return order, err
+	server := http_server.InitServer(cacheLocal)
+	return server.Start()
 }
