@@ -16,4 +16,8 @@ type OrderEntity struct {
 	SmID              uint64    `db:"sm_id" json:"sm_id" validate:"required"`
 	DateCreated       time.Time `db:"date_created" json:"date_created" validate:"required"`
 	OofShard          string    `db:"oof_shard" json:"oof_shard" validate:"required,max=128"`
+
+	Delivery DeliveryEntity `db:"delivery" json:"delivery"`
+	Payment  PaymentEntity  `db:"payment" json:"payment"`
+	Items    []ItemEntity   `db:"items" validate:"required,dive,required" json:"items"`
 }
